@@ -17,28 +17,12 @@ with st.sidebar:
 
 # 3. Model Loading Function (Using Absolute Path for Local Folder)
 @st.cache_resource
-def load_my_model():
-    # Get the absolute path of the current folder where app.py is located
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    
-    # Path to your 'model' folder (Ensure your folder is named 'model')
-    model_path = os.path.join(base_path, "quora_model")
-    
-    # Error checking if folder exists
-    if not os.path.exists(model_path):
-        st.error(f"❌ Error: Model folder not found at {model_path}")
-        st.write("Current directory contents:", os.listdir(base_path))
-        return None
+def load_huggingface_model():
+    # Yahan humne local folder ka jhanjhat khatam kar diya
+    repo_id = "jotaj30/quora-bert-model"
+    return pipeline("text-classification", model=repo_id)
 
-    # Load using the absolute path to avoid OSError
-    try:
-        return pipeline("text-classification", model=model_path, tokenizer=model_path)
-    except Exception as e:
-        st.error(f"❌ Pipeline Error: {e}")
-        return None
-
-# Initialize the model
-pipe = load_my_model()
+pipe = load_huggingface_model()
 
 # 4. Main UI
 st.title("🔍 Quora Question Similarity Checker")
