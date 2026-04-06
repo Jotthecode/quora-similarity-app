@@ -11,7 +11,7 @@ st.set_page_config(page_title="Semantic Similarity AI", page_icon="🧠", layout
 st.markdown("""
     <style>
     .main { background-color: #f8f9fa; }
-    .stProgress > div > div > div > div { background-color: #4CAF50; }
+    .stMetric { background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     </style>
     """, unsafe_allow_html=True)
 
@@ -41,6 +41,8 @@ with col2:
     q2 = st.text_area("Question B", placeholder="e.g. What is the secret to a healthy body?", height=120)
 
 st.markdown("---")
+
+# Logic must be INSIDE the button click
 if st.button("🚀 Run Deep Semantic Analysis", use_container_width=True):
     if q1.strip() and q2.strip():
         with st.spinner('🔄 BERT is calculating attention weights...'):
@@ -62,13 +64,24 @@ if st.button("🚀 Run Deep Semantic Analysis", use_container_width=True):
                         st.balloons()
                     else:
                         st.error("❌ Verdict: UNIQUE INTENT")
+                    
+                    # --- RECOMMENDATIONS ADDED HERE ---
+                    st.markdown("### 💡 AI Recommendations")
+                    if is_duplicate:
+                        st.info("""
+                        * **Merge Content:** These questions are semantically identical. We recommend merging them to avoid answer fragmentation.
+                        * **Top Tags suggested:** #NLP #DeepLearning #Quora
+                        * **Action:** Redirect new users to the existing high-authority thread of Question A.
+                        """)
+                    else:
+                        st.warning("""
+                        * **Keep Separate:** These questions have distinct intents. Maintain separate threads.
+                        * **Context Gap:** Question B covers a different niche. Consider adding specific tags to differentiate them further.
+                        """)
 
                 with res_col2:
                     st.write("### 📝 Explainable AI: Token Match")
-                    # Word highlighting logic
-                    words_q1 = re.findall(r'\w+', q1.lower())
                     words_q2 = re.findall(r'\w+', q2.lower())
-                    
                     annotated_content = []
                     for word in q1.split():
                         clean_word = re.sub(r'[^\w]', '', word.lower())
@@ -78,11 +91,11 @@ if st.button("🚀 Run Deep Semantic Analysis", use_container_width=True):
                             annotated_content.append(word + " ")
                     annotated_text(*annotated_content)
 
-                # Comparison Table for Report Documentation
+                # Metadata Table
                 st.write("### 📊 Inference Metadata")
                 df_meta = pd.DataFrame({
-                    "Parameter": ["Model Type", "Softmax Probability", "Hardware", "Latency"],
-                    "Value": ["Transformer (BERT)", f"{score:.4f}", "CPU/Neural Engine", "Optimized"]
+                    "Parameter": ["Model Type", "Softmax Probability", "Hardware"],
+                    "Value": ["Transformer (BERT)", f"{score:.4f}", "CPU/Neural Engine"]
                 })
                 st.table(df_meta)
 
@@ -91,7 +104,7 @@ if st.button("🚀 Run Deep Semantic Analysis", use_container_width=True):
     else:
         st.warning("Please enter both questions to proceed.")
 
-# 5. Technical Documentation Section (Crucial for 8-page report)
+# 5. Technical Documentation Section
 st.markdown("---")
 with st.expander("🛠️ Technical Methodology & Architecture"):
     st.write("""
