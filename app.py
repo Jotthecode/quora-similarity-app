@@ -68,11 +68,21 @@ if st.button("🚀 Run Deep Semantic Analysis", use_container_width=True):
                     # --- RECOMMENDATIONS ADDED HERE ---
                     st.markdown("### 💡 AI Recommendations")
                     if is_duplicate:
-                        st.info("""
+                        st.balloons()
+                        st.info("### 💡 AI Recommendations")
+                        all_text = (q1 + " " + q2).lower()
+                        words = re.findall(r'\b\w{4,}\b', all_text) # Sirf 4+ letters waale words
+                        stop_words = {'what', 'how', 'is', 'are', 'the', 'this', 'that', 'with', 'related', 'stay', 'being'}
+                        dynamic_tags = list(set([word for word in words if word not in stop_words]))[:4]
+                        tag_string = " ".join([f"#{tag.capitalize()}" for tag in dynamic_tags])
+                        st.markdown(f"""
                         * **Merge Content:** These questions are semantically identical. We recommend merging them to avoid answer fragmentation.
-                        * **Top Tags suggested:** #NLP #DeepLearning #Quora
+                        * **Top Tags suggested:** {tag_string if tag_string else "#General #Knowledge"}
                         * **Action:** Redirect new users to the existing high-authority thread of Question A.
                         """)
+    
+    # Common useless words (Stopwords) ko ignore karna
+    
                     else:
                         st.warning("""
                         * **Keep Separate:** These questions have distinct intents. Maintain separate threads.
