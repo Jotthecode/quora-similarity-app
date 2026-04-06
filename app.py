@@ -66,7 +66,7 @@ if st.button("🚀 Run Deep Semantic Analysis", use_container_width=True):
                         st.error("❌ Verdict: UNIQUE INTENT")
                     
                     # --- RECOMMENDATIONS ADDED HERE ---
-                    st.markdown("### 💡 AI Recommendations")
+                    
                     if is_duplicate:
                         st.balloons()
                         st.info("### 💡 AI Recommendations")
