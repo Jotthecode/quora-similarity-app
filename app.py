@@ -15,13 +15,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. Sidebar Branding
-with st.sidebar:
-    st.image("https://upload.wikimedia.org/wikipedia/en/2/23/SGSITS_Logo.png", width=80)
-    st.title("🛡️ AI Security Lab")
-    st.markdown("---")
-    st.info("**Developer:** Jot Ajmani (SGSITS)\n\n**Model:** BERT-Base-Uncased\n\n**Accuracy:** 81.75%")
-
 # 3. Model Loading
 @st.cache_resource
 def load_nlp_pipeline():
